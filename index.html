@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SIA Stability Diagnostic</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="app-header">
+        <div class="brand-lockup">
+          <img
+            class="brand-logo"
+            src="file:///Users/alkhami/Downloads/ACT%20Logo%202018-PRINT%20%281%29.jpg"
+            alt="ACT logo"
+          />
+          <div class="brand-copy">
+            <p class="eyebrow">Social Impact Accelerator</p>
+            <h1>SIA Stability Diagnostic</h1>
+          </div>
+        </div>
+        <button id="restartButton" class="button button-secondary hidden" type="button">
+          Restart
+        </button>
+      </header>
+
+      <main id="app" class="screen-card" aria-live="polite"></main>
+    </div>
+
+    <template id="entry-screen-template">
+      <section class="screen screen-entry">
+        <div class="entry-hero">
+          <div class="entry-copy">
+            <img
+              class="entry-logo"
+              src="file:///Users/alkhami/Downloads/ACT%20Logo%202018-PRINT%20%281%29.jpg"
+              alt="ACT logo"
+            />
+            <p class="eyebrow">Organisational Stability Tool</p>
+            <h2>SIA Stability Diagnostic</h2>
+            <p class="entry-subtitle">Founder Load × Organisational Capacity</p>
+            <div class="body-copy">
+              <p>
+                This diagnostic maps where pressure is sitting across your organisation and where
+                structure may need to be strengthened so growth does not collapse back onto the
+                founder.
+              </p>
+            </div>
+            <div class="entry-equation" aria-label="Founder Load minus Organisational Capacity equals Pressure Point">
+              <span>Founder Load</span>
+              <span class="equation-symbol">−</span>
+              <span>Organisational Capacity</span>
+              <span class="equation-symbol">=</span>
+              <span>Pressure Point</span>
+            </div>
+            <div class="actions">
+              <button data-action="begin" class="button button-primary" type="button">Begin</button>
+            </div>
+          </div>
+          <aside class="entry-diagram" aria-hidden="true">
+            <div class="diagram-frame">
+              <div class="diagram-column diagram-column-left"></div>
+              <div class="diagram-column diagram-column-right"></div>
+              <div class="diagram-beam diagram-beam-top"></div>
+              <div class="diagram-beam diagram-beam-mid"></div>
+              <div class="diagram-arrow diagram-arrow-load">Founder Load</div>
+              <div class="diagram-arrow diagram-arrow-capacity">Capacity</div>
+              <div class="diagram-node diagram-node-pressure">Pressure Point</div>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </template>
+
+    <template id="instruction-screen-template">
+      <section class="screen screen-panel">
+        <p class="eyebrow">Before You Begin</p>
+        <h2>Instructions</h2>
+        <div class="body-copy">
+          <p>Answer based on what actually happens.</p>
+          <p>No neutral options.</p>
+          <p>Not what you aim for.</p>
+          <p>Not what should happen.</p>
+          <p>Not what is written in a plan somewhere.</p>
+          <p>Answer from the reality of the organisation under pressure.</p>
+        </div>
+        <div class="actions">
+          <button data-action="continue" class="button button-primary" type="button">
+            Continue
+          </button>
+        </div>
+      </section>
+    </template>
+
+    <template id="details-screen-template">
+      <section class="screen screen-panel">
+        <p class="eyebrow">Participant Record</p>
+        <h2>Participant Details</h2>
+        <form id="participantForm" class="details-form">
+          <label>
+            <span>Name</span>
+            <input name="name" type="text" autocomplete="name" />
+          </label>
+          <label>
+            <span>Organisation name</span>
+            <input name="organisation_name" type="text" autocomplete="organization" />
+          </label>
+          <label>
+            <span>Role</span>
+            <input name="role" type="text" autocomplete="organization-title" />
+          </label>
+          <label>
+            <span>Email</span>
+            <input name="email" type="email" autocomplete="email" />
+          </label>
+          <label>
+            <span>Date completed</span>
+            <input name="date_completed" type="date" />
+          </label>
+          <label>
+            <span>Diagnostic stage</span>
+            <select name="diagnostic_stage">
+              <option>Baseline</option>
+              <option>Mid-programme</option>
+              <option>End-programme</option>
+              <option>Other</option>
+            </select>
+          </label>
+          <div class="actions">
+            <button class="button button-primary" type="submit">Start Diagnostic</button>
+          </div>
+        </form>
+      </section>
+    </template>
+
+    <template id="question-screen-template">
+      <section class="screen screen-question">
+        <div class="progress-group">
+          <div class="progress-row">
+            <div class="progress-text" id="progressText"></div>
+            <div class="progress-step-tag">Pressure Mapping Sequence</div>
+          </div>
+          <div class="progress-bar">
+            <div id="progressBarFill" class="progress-bar-fill"></div>
+          </div>
+        </div>
+        <div class="question-meta">
+          <p id="pillarLabel" class="pillar-label"></p>
+          <span id="dimensionBadge" class="dimension-badge"></span>
+        </div>
+        <p class="question-helper">
+          Answer based on what happens under pressure, not what should happen.
+        </p>
+        <h2 id="questionText" class="question-text"></h2>
+        <div id="responseOptions" class="response-options" role="radiogroup"></div>
+        <div class="actions split-actions">
+          <button id="backButton" class="button button-secondary" type="button">Back</button>
+          <button id="nextButton" class="button button-primary" type="button">Continue</button>
+        </div>
+      </section>
+    </template>
+
+    <template id="processing-screen-template">
+      <section class="screen screen-processing">
+        <p class="eyebrow">Building Stability Map</p>
+        <h2>Processing Your Stability Map</h2>
+        <div class="body-copy">
+          <p>Reading where pressure is sitting.</p>
+          <p>Mapping founder load against organisational capacity.</p>
+          <p>Identifying the first structural priorities.</p>
+        </div>
+        <div class="spinner" aria-hidden="true"></div>
+      </section>
+    </template>
+
+    <template id="results-screen-template">
+      <section class="screen screen-results">
+        <div class="results-header">
+          <div class="report-header">
+            <div class="report-title-block">
+              <img
+                class="report-logo"
+                src="file:///Users/alkhami/Downloads/ACT%20Logo%202018-PRINT%20%281%29.jpg"
+                alt="ACT logo"
+              />
+              <div>
+                <p class="eyebrow">Stability Map Report</p>
+                <h2>Your Stability Map</h2>
+                <p class="report-subtitle">Founder Load × Organisational Capacity</p>
+              </div>
+            </div>
+            <div id="participantSummary" class="participant-summary"></div>
+          </div>
+          <div class="results-actions">
+            <button id="downloadJsonButton" class="button button-secondary" type="button">
+              Download JSON
+            </button>
+            <button id="downloadCsvButton" class="button button-secondary" type="button">
+              Download CSV
+            </button>
+            <button id="printButton" class="button button-primary" type="button">
+              Print / Save as PDF
+            </button>
+          </div>
+        </div>
+
+        <section class="results-section">
+          <h3>Overall interpretation</h3>
+          <article class="summary-card">
+            <p id="overallInterpretation"></p>
+          </article>
+        </section>
+
+        <section class="results-section">
+          <h3>Founder Dependency Insight</h3>
+          <article class="summary-card">
+            <p id="founderDependencyInsight"></p>
+          </article>
+        </section>
+
+        <section class="results-section">
+          <h3>What this means in practice</h3>
+          <article class="summary-card">
+            <p id="whatThisMeansIntro"></p>
+            <ul id="whatThisMeansList" class="practice-list"></ul>
+          </article>
+        </section>
+
+        <section class="results-section">
+          <h3>Top priority pillars</h3>
+          <div id="priorityPillars" class="priority-grid"></div>
+        </section>
+
+        <section class="results-section">
+          <div class="section-heading-row">
+            <h3>Six-pillar Stability Map</h3>
+            <div class="status-legend" id="statusLegend"></div>
+          </div>
+          <div id="pillarCards" class="pillar-card-grid"></div>
+        </section>
+
+        <section class="results-section">
+          <div class="section-heading-row">
+            <h3>Load vs Capacity visual</h3>
+            <div class="chart-legend" id="barLegend"></div>
+          </div>
+          <div id="chartContainer" class="chart-list"></div>
+        </section>
+
+        <section class="results-section">
+          <h3>Closing next step</h3>
+          <article class="summary-card">
+            <p id="nextActionText"></p>
+            <p class="closing-note">
+              This diagnostic does not tell you everything about your organisation. It shows where
+              pressure is currently concentrating. The next step is not to fix everything. The next
+              step is to stabilise the one or two areas where structure would reduce the most
+              pressure.
+            </p>
+          </article>
+        </section>
+      </section>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>
